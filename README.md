@@ -2,10 +2,9 @@
 A lightweight library allowing the communication between several programs through SharedMemory.
 
 ### Features
-* ...
+* Implementation of a functional version
 
 ### Future improvement
-* Implementation of a functional version
 * Creation of a communication module per JSON file
 
 ### More
