@@ -5,7 +5,7 @@ Author: Zentetsu
 
 ----
 
-Last Modified: Wed Jul 08 2020
+Last Modified: Mon Jul 13 2020
 Modified By: Zentetsu
 
 ----
@@ -31,12 +31,14 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ----
 
 HISTORY:
+2020-07-13	Zen	Draft finished (not tested yet)
 2020-07-08	Zen	Draft (not tested yet)
 '''
 
 
 from .IRONError import *
 from SharedMemory import *
+import json
 
 
 class Module:
@@ -48,21 +50,32 @@ class Module:
             self._loadJSON(file)
         else:
             self.name = name
-
-        self.listener = {}
-        self.sender = {}
+            self.sender = {}
+            self.listener = {}
 
     def _loadJSON(self, file):
-        #TODO write JSON loader
-        pass
+        json_file = open(file)
+        value = json.load(json_file)
+        json_file.close()
+
+        self._checkIntegrity(value)
+
+        self.name = value["name"]
+        self.sender = value["sender"]
+        self.listener = value["listener"]
 
     def dumpJSON(self, file):
-        #TODO write JSON dumper
-        pass
+        _dict = {"name": self.name, "sender": self.sender, "listener": self.listener}
+        json_file = open(file)
+        value = json.dump(json_file)
+        json_file.close()
 
-    def _checkIntegrity(self):
-        #TODO
-        pass
+    def _checkIntegrity(self, value: dict):
+        if not all([n in value.key() for n in ["name", "sender", "listener"]]):
+            raise IRONKeyMissing
+
+        if not value["sender"] and not value["listener"]:
+            raise IRONSenderListenerEmpty
 
     def _checkNameExistOrNot(self, name, exist=True):
         if exist:
@@ -95,50 +108,73 @@ class Module:
         self.sender.pop(name)
 
     def getLSName(self, listener=True, sender=True):
-        _listener = []
         _sender = []
-        
-        if listener:
-            _listener = [n for n in self.listener.keys()]
-        
+        _listener = []
+
         if sender:
             _sender = [n for n in self.sender.keys()]
 
-        return _listener, _sender
+        if listener:
+            _listener = [n for n in self.listener.keys()]
+
+        return  _sender, _listener
 
     def getValue(self, name):
         self._checkNameExistOrNot(name, True)
 
-        if name in self.listener.keys():
-            return self.listener[name].getValue()
-        else:
+        if name in self.sender.keys():
             return self.sender[name].getValue()
+        else:
+            return self.listener[name].getValue()
 
     def setValue(self, name, value):
         self._checkNameExistOrNot(name, True)
 
-        if name in self.listener.keys():
-            self.listener[name].updateValue(value)
-        else:
+        if name in self.sender.keys():
             self.sender[name].updateValue(value)
+        else:
+            self.listener[name].updateValue(value)
 
     def startModule(self, name=None):
-        #TODO for the moment: autostart
-        pass
+        if name is not None:
+            self._checkNameExistOrNot(name)
+            if name in self.sender.keys():
+                self.sender[name].start()
+            else:
+                self.listener[name].start()
+        else:
+            for n in self.sender.keys():
+                self.sender[n].start()
+
+            for n in self.listener.keys():
+                self.listener[n].connect()
 
     def stopModule(self, name=None):
         if name is not None:
-            if name in self.listener.keys():
-                self.listener[name].stop()
-            else:
+            if name in self.sender.keys():
                 self.sender[name].stop()
+            else:
+                self.listener[name].stop()
         else:
-            for n in self.listener.keys():
-                self.listener[n].stop()
-
             for n in self.sender.keys():
                 self.sender[n].stop()
 
+            for n in self.listener.keys():
+                self.listener[n].stop()
+
     def restartModule(self, name=None):
-        #TODO
-        pass
+        if name is not None:
+            self._checkNameExistOrNot(name)
+            self.listener[name].restart()
+
+        else:
+            for n in self.sender.keys():
+                self.sender[n].restart()
+
+            for n in self.listener.keys():
+                self.listener[n].reconnect()
+
+    def __repr__(self):
+        s = "Name: " + self.name + "\n" + "Sender: " + self.sender.__repr__() + "\n" + "Listener: " + self.listener.__repr__()
+
+        return s

@@ -5,7 +5,7 @@ Author: Zentetsu
 
 ----
 
-Last Modified: Wed Jul 08 2020
+Last Modified: Mon Jul 13 2020
 Modified By: Zentetsu
 
 ----
@@ -48,4 +48,14 @@ class IRONNameExist(Exception):
 class IRONNameNotExist(Exception):
     def __init__(self, name, message=" doesn't exist."):
         self.message = name + message
+        super().__init__(self.message)
+
+class IRONKeyMissing(Exception):
+    def __init__(self, message="Key missing in JSON file."):
+        self.message = message
+        super().__init__(self.message)
+
+class IRONSenderListenerEmpty(Exception):
+    def __init__(self, message="Sender and Listener are empty."):
+        self.message = message
         super().__init__(self.message)
