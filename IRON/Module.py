@@ -5,7 +5,7 @@ Author: Zentetsu
 
 ----
 
-Last Modified: Mon Jul 13 2020
+Last Modified: Thu Jul 16 2020
 Modified By: Zentetsu
 
 ----
@@ -97,7 +97,7 @@ class Module:
         self.stopModule(name)
 
     def addSender(self, name, value=None, path=None, size=10, timeout=1):
-        self._checkNameExistOrNot(name, True)
+        self._checkNameExistOrNot(name, False)
 
         self.sender[name] = Client(name, value, path, size, timeout)
 
@@ -165,7 +165,11 @@ class Module:
     def restartModule(self, name=None):
         if name is not None:
             self._checkNameExistOrNot(name)
-            self.listener[name].restart()
+            if name in self.sender.keys():
+                self.sender[name].restart()
+            else:
+                self.listener[name].restart()
+
 
         else:
             for n in self.sender.keys():
