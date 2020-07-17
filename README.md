@@ -6,6 +6,7 @@ A lightweight library allowing the communication between several programs throug
 
 ### Future improvement
 * Creation of a communication module per JSON file
+* Adding comments
 
 ### More
 [![PyPI version](https://badge.fury.io/py/IRON.svg)](https://badge.fury.io/py/IRON)
