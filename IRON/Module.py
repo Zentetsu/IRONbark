@@ -5,7 +5,7 @@ Author: Zentetsu
 
 ----
 
-Last Modified: Thu Jul 16 2020
+Last Modified: Fri Jul 17 2020
 Modified By: Zentetsu
 
 ----
@@ -88,13 +88,13 @@ class Module:
     def addListener(self, name, timeout=1):
         self._checkNameExistOrNot(name, False)
 
-        self.sender[name] = Server(name, timeout)
+        self.listener[name] = Server(name, timeout)
 
     def delListener(self, name):
         self._checkNameExistOrNot(name)
 
-        self.listener.pop(name)
         self.stopModule(name)
+        self.listener.pop(name)
 
     def addSender(self, name, value=None, path=None, size=10, timeout=1):
         self._checkNameExistOrNot(name, False)
