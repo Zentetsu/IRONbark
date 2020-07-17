@@ -35,8 +35,8 @@ HISTORY:
 '''
 
 
-from context import Module
-# from IRON.Module import Module
+# from context import Module
+from IRON.Module import Module
 
 def test_error_None():
     m = Module("test0")
