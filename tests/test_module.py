@@ -5,7 +5,7 @@ Author: Zentetsu
 
 ----
 
-Last Modified: Thu Jul 16 2020
+Last Modified: Fri Jul 17 2020
 Modified By: Zentetsu
 
 ----
@@ -35,8 +35,8 @@ HISTORY:
 '''
 
 
-# from context import Module
-from IRON.Module import Module
+from context import Module
+# from IRON.Module import Module
 
 def test_error_None():
     m = Module("test0")
@@ -143,13 +143,55 @@ def test_setValue3():
     m.stopModule()
     m2.stopModule()
 
+def test_del_sender():
+    m = Module("test10")
+    m.addSender("name", value=10)
+    print(m)
+    _s, _ = m.getLSName()
+    assert len(_s) == 1
+    m.delSender("name")
+    print(m)
+    _s, _ = m.getLSName()
+    assert len(_s) == 0
+    m.stopModule()
+
+def test_del_listener():
+    m = Module("test11a")
+    m2 = Module("test11b")
+    m.addSender("name", value=10)
+    m2.addListener("name")
+    print(m)
+    print(m2)
+    _, _l = m2.getLSName()
+    assert len(_l) == 1
+    m2.delListener("name")
+    print(m2)
+    _, _l = m2.getLSName()
+    assert len(_l) == 0
+    m.stopModule()
+    m2.stopModule()
+
 test_error_None()
+print("----------------")
 test_add_sender()
+print("----------------")
 test_add_listener()
+print("----------------")
 test_add_listener2()
+print("----------------")
 test_restart()
+print("----------------")
 test_stop_start()
+print("----------------")
 test_stop_start2()
+print("----------------")
 test_setValue()
+print("----------------")
 test_setValue2()
+print("----------------")
 test_setValue3()
+print("----------------")
+test_del_sender()
+print("----------------")
+test_del_listener()
+print("----------------")
