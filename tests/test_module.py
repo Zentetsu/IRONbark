@@ -35,8 +35,8 @@ HISTORY:
 '''
 
 
-# from context import Module
-from IRON.Module import Module
+from context import Module
+# from IRON.Module import Module
 
 def test_error_None():
     m = Module("test0")
@@ -188,7 +188,7 @@ def test_availability():
     m = Module("test13")
     m.addSender("name", value=10)
     print(m)
-    assert m.getLSAvailability(sender=True)[0][0][0] == True and m.getLSAvailability(sender=True)[0][0][1] == False
+    assert m.getLSAvailability(sender=True)[0][0] == (True, False)
     m.stopModule()
 
 def test_availability():
@@ -198,9 +198,9 @@ def test_availability():
     m2.addListener("name")
     print(m)
     print(m.getLSAvailability(sender=True))
-    # assert m.getLSAvailability(sender=True)[0][0][0] == True and m.getLSAvailability(sender=True)[0][0][1] == True
+    # assert m.getLSAvailability(sender=True)[0][0][0] == (True, True)
     print(m2.getLSAvailability(listener=True))
-    assert m.getLSAvailability(listener=True)[0][0][0] == True and m.getLSAvailability(listener=True)[0][0][1] == True
+    assert m2.getLSAvailability(listener=True)[1][0] == (True, True)
     m.stopModule()
     m2.stopModule()
 
