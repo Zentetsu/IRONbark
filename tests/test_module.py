@@ -5,7 +5,7 @@ Author: Zentetsu
 
 ----
 
-Last Modified: Fri Jul 17 2020
+Last Modified: Tue Jul 21 2020
 Modified By: Zentetsu
 
 ----
@@ -35,8 +35,8 @@ HISTORY:
 '''
 
 
-# from context import Module
-from IRON.Module import Module
+from context import Module
+# from IRON.Module import Module
 
 def test_error_None():
     m = Module("test0")
@@ -171,27 +171,65 @@ def test_del_listener():
     m.stopModule()
     m2.stopModule()
 
+def test_():
+    m = Module("test12a")
+    m2 = Module("test12b")
+    m.addSender("name", value=10)
+    m2.addListener("name")
+    print(m)
+    print(m2)
+    m.stopModule("name")
+    print(m)
+    print(m2)
+    m.stopModule()
+    m2.stopModule()
+
+def test_availability():
+    m = Module("test13")
+    m.addSender("name", value=10)
+    print(m)
+    assert m.getLSAvailability(sender=True)[0][0][0] == True and m.getLSAvailability(sender=True)[0][0][1] == False
+    m.stopModule()
+
+def test_availability():
+    m = Module("test14a")
+    m2 = Module("test14b")
+    m.addSender("name", value=10)
+    m2.addListener("name")
+    print(m)
+    print(m.getLSAvailability(sender=True))
+    # assert m.getLSAvailability(sender=True)[0][0][0] == True and m.getLSAvailability(sender=True)[0][0][1] == True
+    print(m2.getLSAvailability(listener=True))
+    assert m.getLSAvailability(sender=True)[0][0][0] == True and m.getLSAvailability(sender=True)[0][0][1] == True
+    m.stopModule()
+    m2.stopModule()
+
+
 test_error_None()
-print("----------------")
+print("-"*10)
 test_add_sender()
-print("----------------")
+print("-"*10)
 test_add_listener()
-print("----------------")
+print("-"*10)
 test_add_listener2()
-print("----------------")
+print("-"*10)
 test_restart()
-print("----------------")
+print("-"*10)
 test_stop_start()
-print("----------------")
+print("-"*10)
 test_stop_start2()
-print("----------------")
+print("-"*10)
 test_setValue()
-print("----------------")
+print("-"*10)
 test_setValue2()
-print("----------------")
+print("-"*10)
 test_setValue3()
-print("----------------")
+print("-"*10)
 test_del_sender()
-print("----------------")
+print("-"*10)
 test_del_listener()
-print("----------------")
+print("-"*10)
+test_()
+print("-"*10)
+test_availability()
+print("-"*10)
