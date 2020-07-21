@@ -200,7 +200,7 @@ def test_availability():
     print(m.getLSAvailability(sender=True))
     # assert m.getLSAvailability(sender=True)[0][0][0] == True and m.getLSAvailability(sender=True)[0][0][1] == True
     print(m2.getLSAvailability(listener=True))
-    assert m.getLSAvailability(sender=True)[0][0][0] == True and m.getLSAvailability(sender=True)[0][0][1] == True
+    assert m.getLSAvailability(listener=True)[0][0][0] == True and m.getLSAvailability(listener=True)[0][0][1] == True
     m.stopModule()
     m2.stopModule()
 
