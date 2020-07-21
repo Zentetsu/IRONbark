@@ -5,7 +5,7 @@ Author: Zentetsu
 
 ----
 
-Last Modified: Fri Jul 17 2020
+Last Modified: Tue Jul 21 2020
 Modified By: Zentetsu
 
 ----
@@ -31,6 +31,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ----
 
 HISTORY:
+2020-07-17	Zen	fix for addListener and delListener
 2020-07-13	Zen	Draft finished (not tested yet)
 2020-07-08	Zen	Draft (not tested yet)
 '''
@@ -135,6 +136,18 @@ class Module:
         else:
             self.listener[name].updateValue(value)
 
+    def getLSAvailability(self, listener=None, sender=None):
+        _sender = []
+        _listener = []
+
+        if sender:
+            _sender = [self.sender[n].getAvailability() for n in self.sender.keys()]
+
+        if listener:
+            _listener = [self.listener[n].getAvailability() for n in self.listener.keys()]
+
+        return  _sender, _listener
+
     def startModule(self, name=None):
         if name is not None:
             self._checkNameExistOrNot(name)
@@ -170,7 +183,6 @@ class Module:
             else:
                 self.listener[name].restart()
 
-
         else:
             for n in self.sender.keys():
                 self.sender[n].restart()
@@ -179,6 +191,8 @@ class Module:
                 self.listener[n].reconnect()
 
     def __repr__(self):
-        s = "Name: " + self.name + "\n" + "Sender: " + self.sender.__repr__() + "\n" + "Listener: " + self.listener.__repr__()
+        s = "Name: " + self.name + "\n"\
+            + "\tSender: " + list(self.sender.keys()).__repr__() + "\n"\
+            + "\tListener: " + list(self.listener.keys()).__repr__()
 
         return s
