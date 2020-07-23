@@ -5,7 +5,7 @@ Author: Zentetsu
 
 ----
 
-Last Modified: Wed Jul 22 2020
+Last Modified: Thu Jul 23 2020
 Modified By: Zentetsu
 
 ----
@@ -31,6 +31,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ----
 
 HISTORY:
+2020-07-23	Zen	Fixing Module creation by JSON file
 2020-07-22	Zen	Adding comments and Availability method
 2020-07-17	Zen	fix for addListener and delListener
 2020-07-13	Zen	Draft finished (not tested yet)
@@ -59,12 +60,13 @@ class Module:
         if name is None and file is None or name is not None and file is not None:
             raise IRONMultiInputError()
 
+        self.sender = {}
+        self.listener = {}
+
         if file is not None:
             self._loadJSON(file)
         else:
             self.name = name
-            self.sender = {}
-            self.listener = {}
 
     def _loadJSON(self, file:str):
         """Method to load the module structure from a JSON file
@@ -77,11 +79,17 @@ class Module:
         value = json.load(json_file)
         json_file.close()
 
+        print(value)
+
         self._checkIntegrity(value)
 
         self.name = value["name"]
-        self.sender = value["sender"]
-        self.listener = value["listener"]
+
+        for s in value["sender"].keys():
+            self.addSender(s, value["sender"][s])
+
+        for s in value["listener"]:
+            self.addListener(s)
 
     def dumpJSON(self, file:str):
         """Method to save the module structure into a JSON file
@@ -105,7 +113,7 @@ class Module:
             IRONKeyMissing: raise an error when one of the principal key is not into the dict
             IRONSenderListenerEmpty: raise ann error when there(re not listener and sender into the dict)
         """
-        if not all([n in value.key() for n in ["name", "sender", "listener"]]):
+        if not all([n in value.keys() for n in ["name", "sender", "listener"]]):
             raise IRONKeyMissing
 
         if not value["sender"] and not value["listener"]:
