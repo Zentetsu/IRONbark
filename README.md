@@ -1,4 +1,4 @@
-# IRON: Inter Process Communication
+# IRON-BARK: Inter Process Communication
 A lightweight library allowing the communication between several programs through SharedMemory.
 
 ### Features
