@@ -5,7 +5,7 @@ Author: Zentetsu
 
 ----
 
-Last Modified: Tue Jul 21 2020
+Last Modified: Thu Jul 23 2020
 Modified By: Zentetsu
 
 ----
@@ -31,6 +31,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ----
 
 HISTORY:
+2020-07-23	Zen	Adding test for JSON file
 2020-07-08	Zen	Creating file
 '''
 
@@ -204,6 +205,23 @@ def test_availability():
     m.stopModule()
     m2.stopModule()
 
+def test_JSON():
+    m = Module(file="tests/test.json")
+    print(m)
+    print(m.getValue("sender1"))
+    assert m.getValue("sender1") == {'test': [10, 30, True], 'test2': ['str', 1.2]}
+    m.stopModule()
+
+def test_JSON2():
+    m = Module(file="tests/test.json")
+    m2 = Module(file="tests/test2.json")
+    print(m)
+    print(m2)
+    print(m2.getValue("sender1"))
+    assert m2.getValue("sender1") == {'test': [10, 30, True], 'test2': ['str', 1.2]}
+    m.stopModule()
+    m2.stopModule()
+
 
 test_error_None()
 print("-"*10)
@@ -232,4 +250,8 @@ print("-"*10)
 test_()
 print("-"*10)
 test_availability()
+print("-"*10)
+test_JSON()
+print("-"*10)
+test_JSON2()
 print("-"*10)
