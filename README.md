@@ -3,9 +3,9 @@ A lightweight library allowing the communication between several programs throug
 
 ### Features
 * Implementation of a functional version
+* Creation of a communication module by JSON file
 
 ### Future improvement
-* Creation of a communication module per JSON file
 * Adding comments
 
 ### More
