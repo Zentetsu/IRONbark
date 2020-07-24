@@ -5,7 +5,7 @@ Author: Zentetsu
 
 ----
 
-Last Modified: Mon Jul 13 2020
+Last Modified: Fri Jul 24 2020
 Modified By: Zentetsu
 
 ----
@@ -38,7 +38,7 @@ HISTORY:
 from setuptools import setup, find_packages
 
 setup(
-    name='IRON',
+    name='IRONbark',
     version='0.1.0-dev0',
     author='Zentetsu',
     packages=find_packages(exclude=['tests*']),

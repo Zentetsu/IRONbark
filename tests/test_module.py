@@ -5,7 +5,7 @@ Author: Zentetsu
 
 ----
 
-Last Modified: Thu Jul 23 2020
+Last Modified: Fri Jul 24 2020
 Modified By: Zentetsu
 
 ----
@@ -37,7 +37,7 @@ HISTORY:
 
 
 # from context import Module
-from IRON.Module import Module
+from IRONbark.Module import Module
 
 def test_error_None():
     m = Module("test0")
