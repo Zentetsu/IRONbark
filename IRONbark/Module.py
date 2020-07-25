@@ -5,12 +5,12 @@ Author: Zentetsu
 
 ----
 
-Last Modified: Thu Jul 23 2020
+Last Modified: Sun Jul 26 2020
 Modified By: Zentetsu
 
 ----
 
-Project: SharedMemory
+Project: IRONbark
 Copyright (c) 2020 Zentetsu
 
 ----
@@ -45,7 +45,7 @@ import json
 
 
 class Module:
-    """Module class focused on vommunicate data with other modules
+    """Module class focused on communicate data with other modules
     """
     def __init__(self, name:str=None, file:str=None):
         """Class constructor
