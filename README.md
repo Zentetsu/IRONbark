@@ -10,7 +10,7 @@ A lightweight library allowing the communication between several programs throug
 
 ### More
 [![PyPI version](https://badge.fury.io/py/IRONbark.svg)](https://badge.fury.io/py/IRONbark)
-[![Python 3.8](https://img.shields.io/badge/python-3.8-blue.svg)](https://www.python.org/downloads/release/python-380/)
-[![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](http://www.gnu.org/licenses/gpl-3.0)
 ![Python package](https://github.com/Zentetsu/IRON/workflows/Python%20package/badge.svg?branch=master)
 ![Upload Python Package](https://github.com/Zentetsu/IRONbark/workflows/Upload%20Python%20Package/badge.svg)
+[![Python 3.8](https://img.shields.io/badge/python-3.8-blue.svg)](https://www.python.org/downloads/release/python-380/)
+[![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](http://www.gnu.org/licenses/gpl-3.0)
