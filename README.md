@@ -5,6 +5,9 @@ A lightweight library allowing the communication between several programs throug
 * Implementation of a functional version
 * Creation of a communication module by JSON file
 
+### Ongoing
+* Overloading dict methods to call Sender and Listener
+
 ### Future improvement
 * Adding comments
 
