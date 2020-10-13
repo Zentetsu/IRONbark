@@ -5,7 +5,7 @@ Author: Zentetsu
 
 ----
 
-Last Modified: Sat Jul 25 2020
+Last Modified: Tue Oct 13 2020
 Modified By: Zentetsu
 
 ----
@@ -39,7 +39,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='IRONbark',
-    version='0.1.0-dev1',
+    version='0.1.0-dev2',
     author='Zentetsu',
     packages=find_packages(exclude=['tests*']),
     license='GPLv3',
