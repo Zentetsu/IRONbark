@@ -1,1 +1,1 @@
-SharedMemory==0.2.2-dev0
+SharedMemory>=0.2.2-dev0
