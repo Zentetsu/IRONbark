@@ -31,6 +31,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ----
 
 HISTORY:
+2020-10-14	Zen	Updating dumpJSON method
 2020-10-14	Zen	Adding getter to access to Module data
 2020-07-23	Zen	Fixing Module creation by JSON file
 2020-07-22	Zen	Adding comments and Availability method
@@ -80,8 +81,6 @@ class Module:
         value = json.load(json_file)
         json_file.close()
 
-        print(value)
-
         self._checkIntegrity(value)
 
         self.name = value["name"]
@@ -98,10 +97,16 @@ class Module:
         Args:
             file (str): path to the JSON file
         """
-        #TODO need to be tested
-        _dict = {"name": self.name, "sender": self.sender, "listener": self.listener}
-        json_file = open(file)
-        value = json.dump(json_file)
+        _dict = {"name": self.name, "sender": {}, "listener": []}
+
+        for k in self.sender.keys():
+            _dict["sender"][k] = self.sender[k].getValue()
+
+        for k in self.listener.keys():
+            _dict["listener"].append(k)
+
+        json_file = open(file, 'w+')
+        json.dump(_dict, json_file)
         json_file.close()
 
     def _checkIntegrity(self, value:dict):
