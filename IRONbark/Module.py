@@ -5,7 +5,7 @@ Author: Zentetsu
 
 ----
 
-Last Modified: Sun Jul 26 2020
+Last Modified: Wed Oct 14 2020
 Modified By: Zentetsu
 
 ----
@@ -31,6 +31,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ----
 
 HISTORY:
+2020-10-14	Zen	Adding getter to access to Module data
 2020-07-23	Zen	Fixing Module creation by JSON file
 2020-07-22	Zen	Adding comments and Availability method
 2020-07-17	Zen	fix for addListener and delListener
@@ -220,6 +221,25 @@ class Module:
             return self.sender[name].getValue()
         else:
             return self.listener[name].getValue()
+
+    def __getitem__(self, key):
+        """Method to get item value from Module
+
+        Args:
+            key (str): key
+
+        Returns:
+            [type]: return data
+        """
+        if type(key) is not str:
+            raise TypeError("Key should a str.")
+
+        self._checkNameExistOrNot(key, True)
+
+        if key in self.sender.keys():
+            return self.sender[key]
+        else:
+            return self.listener[key]
 
     def setValue(self, name:str, value):
         """Method to update data

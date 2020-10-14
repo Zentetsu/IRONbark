@@ -5,7 +5,7 @@ Author: Zentetsu
 
 ----
 
-Last Modified: Tue Oct 13 2020
+Last Modified: Wed Oct 14 2020
 Modified By: Zentetsu
 
 ----
@@ -31,6 +31,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ----
 
 HISTORY:
+2020-10-14	Zen	Updating test
 2020-10-13	Zen	Updating test
 2020-07-23	Zen	Adding test for JSON file
 2020-07-08	Zen	Creating file
@@ -58,6 +59,7 @@ def test_addSender():
             m = Module("test1")
             m.addSender("name", value=10)
             assert m.getValue("name") == 10
+            assert m["name"][0] == 10
             m.stopModule()
         print("SUCCESSED")
     except:
@@ -71,6 +73,7 @@ def test_addListener():
             m = Module("test2")
             m.addListener("name")
             assert m.getValue("name") == None
+            assert m["name"][0] == None
             m.stopModule()
         print("SUCCESSED")
     except:
@@ -86,6 +89,7 @@ def test_addListener2():
             m2 = Module("test3b")
             m2.addListener("name")
             assert m2.getValue("name") == 10
+            assert m2["name"][0] == 10
             m.stopModule()
             m2.stopModule()
         print("SUCCESSED")
@@ -130,6 +134,7 @@ def test_setValue():
             m.addSender("name", value=10)
             m.setValue("name", 20)
             assert m.getValue("name") == 20
+            assert m["name"][0] == 20
             m.stopModule()
         print("SUCCESSED")
     except:
@@ -146,6 +151,7 @@ def test_setValue2():
             m2.addListener("name")
             m.setValue("name", 20)
             assert m2.getValue("name") == 20
+            assert m2["name"][0] == 20
             m.stopModule()
             m2.stopModule()
         print("SUCCESSED")
@@ -163,6 +169,7 @@ def test_setValue3():
             m2.addListener("name")
             m2.setValue("name", 20)
             assert m.getValue("name") == 20
+            assert m2["name"][0] == 20
             m.stopModule()
             m2.stopModule()
         print("SUCCESSED")
