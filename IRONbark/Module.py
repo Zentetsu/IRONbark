@@ -5,7 +5,7 @@ Author: Zentetsu
 
 ----
 
-Last Modified: Wed Oct 14 2020
+Last Modified: Fri Nov 06 2020
 Modified By: Zentetsu
 
 ----
@@ -31,6 +31,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ----
 
 HISTORY:
+2020-11-06	Zen	Fix calling wrong method
 2020-10-14	Zen	Updating dumpJSON method
 2020-10-14	Zen	Adding getter to access to Module data
 2020-07-23	Zen	Fixing Module creation by JSON file
@@ -329,7 +330,7 @@ class Module:
             if name in self.sender.keys():
                 self.sender[name].restart()
             else:
-                self.listener[name].restart()
+                self.listener[name].reconnect()
 
         else:
             for n in self.sender.keys():
