@@ -5,7 +5,7 @@ Author: Zentetsu
 
 ----
 
-Last Modified: Fri Nov 06 2020
+Last Modified: Wed Nov 24 2021
 Modified By: Zentetsu
 
 ----
@@ -31,6 +31,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ----
 
 HISTORY:
+2021-11-24	Zen	Updating lib to work with new SharedMeory version
 2020-11-06	Zen	Fix calling wrong method
 2020-10-14	Zen	Updating dumpJSON method
 2020-10-14	Zen	Adding getter to access to Module data
@@ -43,7 +44,7 @@ HISTORY:
 
 
 from .IRONError import *
-from SharedMemory import *
+from SharedMemory import SharedMemory
 import json
 
 
@@ -71,27 +72,6 @@ class Module:
         else:
             self.name = name
 
-    def _loadJSON(self, file:str):
-        """Method to load the module structure from a JSON file
-
-        Args:
-            file (str): path of the JSON file
-        """
-        #TODO need to be tested
-        json_file = open(file)
-        value = json.load(json_file)
-        json_file.close()
-
-        self._checkIntegrity(value)
-
-        self.name = value["name"]
-
-        for s in value["sender"].keys():
-            self.addSender(s, value["sender"][s])
-
-        for s in value["listener"]:
-            self.addListener(s)
-
     def dumpJSON(self, file:str):
         """Method to save the module structure into a JSON file
 
@@ -110,40 +90,6 @@ class Module:
         json.dump(_dict, json_file)
         json_file.close()
 
-    def _checkIntegrity(self, value:dict):
-        """Method to chech the integrity of the module structure extract from the JSON file
-
-        Args:
-            value (dict): dict that's containt values of the module
-
-        Raises:
-            IRONKeyMissing: raise an error when one of the principal key is not into the dict
-            IRONSenderListenerEmpty: raise ann error when there(re not listener and sender into the dict)
-        """
-        if not all([n in value.keys() for n in ["name", "sender", "listener"]]):
-            raise IRONKeyMissing
-
-        if not value["sender"] and not value["listener"]:
-            raise IRONSenderListenerEmpty
-
-    def _checkNameExistOrNot(self, name:str, exist=True):
-        """Method that check if a name is already or not used by a shared memory
-
-        Args:
-            name (str): Shared Memory name
-            exist (bool, optional): True -> name mst be defined, False -> name must be undefined. Defaults to True.
-
-        Raises:
-            IRONNameNotExist: raise an error if name doesn't exist
-            IRONNameExist: raise an error if name exist
-        """
-        if exist:
-            if name not in self.listener.keys() and name not in self.sender.keys():
-                raise IRONNameNotExist(name)
-        else:
-            if name in self.listener.keys() or name in self.sender.keys():
-                raise IRONNameExist(name)
-
     def addListener(self, name:str, timeout=1):
         """Method to add a Shared Memory Server
 
@@ -153,7 +99,7 @@ class Module:
         """
         self._checkNameExistOrNot(name, False)
 
-        self.listener[name] = Server(name, timeout)
+        self.listener[name] = SharedMemory(name, exist=True) #(name, timeout)
 
     def delListener(self, name:str):
         """Method to remove a Shared Memory Server
@@ -178,7 +124,7 @@ class Module:
         """
         self._checkNameExistOrNot(name, False)
 
-        self.sender[name] = Client(name, value, path, size, timeout)
+        self.sender[name] = SharedMemory(name, value, path, size, False) #(name, value, path, size, timeout)
 
     def delSender(self, name:str):
         """Method to remove a Shared Memory Client
@@ -191,7 +137,7 @@ class Module:
         self.stopModule(name)
         self.sender.pop(name)
 
-    def getLSName(self, listener=True, sender=True) -> [list, list]:
+    def getLSName(self, listener=True, sender=True):
         """Method to return al liste that contains name of sender and listener
 
         Args:
@@ -228,25 +174,6 @@ class Module:
         else:
             return self.listener[name].getValue()
 
-    def __getitem__(self, key):
-        """Method to get item value from Module
-
-        Args:
-            key (str): key
-
-        Returns:
-            [type]: return data
-        """
-        if type(key) is not str:
-            raise TypeError("Key should a str.")
-
-        self._checkNameExistOrNot(key, True)
-
-        if key in self.sender.keys():
-            return self.sender[key]
-        else:
-            return self.listener[key]
-
     def setValue(self, name:str, value):
         """Method to update data
 
@@ -257,11 +184,11 @@ class Module:
         self._checkNameExistOrNot(name, True)
 
         if name in self.sender.keys():
-            self.sender[name].updateValue(value)
+            self.sender[name].setValue(value)
         else:
-            self.listener[name].updateValue(value)
+            self.listener[name].setValue(value)
 
-    def getLSAvailability(self, listener=True, sender=True) -> [list, list]:
+    def getLSAvailability(self, listener=False, sender=False):
         """Method to get the availability of each sender and listener
 
         Args:
@@ -291,15 +218,15 @@ class Module:
         if name is not None:
             self._checkNameExistOrNot(name)
             if name in self.sender.keys():
-                self.sender[name].start()
+                self.sender[name].restart()
             else:
-                self.listener[name].start()
+                self.listener[name].restart()
         else:
             for n in self.sender.keys():
-                self.sender[n].start()
+                self.sender[n].restart()
 
             for n in self.listener.keys():
-                self.listener[n].connect()
+                self.listener[n].restart()
 
     def stopModule(self, name:str=None):
         """Method to stop senders and listeners
@@ -309,15 +236,15 @@ class Module:
         """
         if name is not None:
             if name in self.sender.keys():
-                self.sender[name].stop()
+                self.sender[name].close()
             else:
-                self.listener[name].stop()
+                self.listener[name].close()
         else:
             for n in self.sender.keys():
-                self.sender[n].stop()
+                self.sender[n].close()
 
             for n in self.listener.keys():
-                self.listener[n].stop()
+                self.listener[n].close()
 
     def restartModule(self, name:str=None):
         """Method to restart senders and listeners
@@ -330,14 +257,88 @@ class Module:
             if name in self.sender.keys():
                 self.sender[name].restart()
             else:
-                self.listener[name].reconnect()
+                self.listener[name].restart()
 
         else:
             for n in self.sender.keys():
                 self.sender[n].restart()
 
             for n in self.listener.keys():
-                self.listener[n].reconnect()
+                self.listener[n].restart()
+
+    def _loadJSON(self, file:str):
+        """Method to load the module structure from a JSON file
+
+        Args:
+            file (str): path of the JSON file
+        """
+        #TODO need to be tested
+        json_file = open(file)
+        value = json.load(json_file)
+        json_file.close()
+
+        self._checkIntegrity(value)
+
+        self.name = value["name"]
+
+        for s in value["sender"].keys():
+            self.addSender(s, value["sender"][s])
+
+        for s in value["listener"]:
+            self.addListener(s)
+
+    def _checkNameExistOrNot(self, name:str, exist=True):
+        """Method that check if a name is already or not used by a shared memory
+
+        Args:
+            name (str): Shared Memory name
+            exist (bool, optional): True -> name mst be defined, False -> name must be undefined. Defaults to True.
+
+        Raises:
+            IRONNameNotExist: raise an error if name doesn't exist
+            IRONNameExist: raise an error if name exist
+        """
+        if exist:
+            if name not in self.listener.keys() and name not in self.sender.keys():
+                raise IRONNameNotExist(name)
+        else:
+            if name in self.listener.keys() or name in self.sender.keys():
+                raise IRONNameExist(name)
+
+    def _checkIntegrity(self, value:dict):
+        """Method to chech the integrity of the module structure extract from the JSON file
+
+        Args:
+            value (dict): dict that's containt values of the module
+
+        Raises:
+            IRONKeyMissing: raise an error when one of the principal key is not into the dict
+            IRONSenderListenerEmpty: raise ann error when there(re not listener and sender into the dict)
+        """
+        if not all([n in value.keys() for n in ["name", "sender", "listener"]]):
+            raise IRONKeyMissing
+
+        if not value["sender"] and not value["listener"]:
+            raise IRONSenderListenerEmpty
+
+    def __getitem__(self, key):
+        """Method to get item value from Module
+
+        Args:
+            key (str): key
+
+        Returns:
+            [type]: return data
+        """
+        if type(key) is not str:
+            raise TypeError("Key should a str.")
+
+        self._checkNameExistOrNot(key, True)
+
+        if key in self.sender.keys():
+            return self.sender[key]
+        else:
+            return self.listener[key]
 
     def __repr__(self):
         """Redefined method to print value of the Module Class instance

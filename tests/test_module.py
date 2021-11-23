@@ -5,7 +5,7 @@ Author: Zentetsu
 
 ----
 
-Last Modified: Wed Oct 14 2020
+Last Modified: Wed Nov 24 2021
 Modified By: Zentetsu
 
 ----
@@ -37,6 +37,8 @@ HISTORY:
 2020-07-08	Zen	Creating file
 '''
 
+# import sys
+# sys.path.insert(0, "../")
 
 # from context import Module
 from IRONbark.Module import Module
@@ -75,10 +77,10 @@ def test_addListener():
             assert m.getValue("name") == None
             assert m["name"][0] == None
             m.stopModule()
-        print("SUCCESSED")
-    except:
         print("FAILED")
-        assert False
+    except:
+        print("SUCCESSED")
+        assert True
 
 def test_addListener2():
     print("Add Listener to Module with Sender:", end=" ")
@@ -237,7 +239,7 @@ def test_availability():
         with contextlib.redirect_stdout(None):
             m = Module("test13")
             m.addSender("name", value=10)
-            assert m.getLSAvailability(sender=True)[0][0] == (True, False)
+            assert m.getLSAvailability(sender=True) == ([True], [])
             m.stopModule()
         print("SUCCESSED")
     except:
@@ -252,8 +254,8 @@ def test_availability2():
             m2 = Module("test14b")
             m.addSender("name", value=10)
             m2.addListener("name")
-            assert m.getLSAvailability(sender=True)[0][0] == (True, True)
-            assert m2.getLSAvailability(listener=True)[1][0] == (True, True)
+            assert m.getLSAvailability(sender=True) == ([True], [])
+            assert m2.getLSAvailability(listener=True) == ([], [True])
             m.stopModule()
             m2.stopModule()
         print("SUCCESSED")
@@ -266,7 +268,7 @@ def test_JSON():
     try:
         with contextlib.redirect_stdout(None):
             m = Module(file="tests/test.json")
-            assert m.getValue("sender1") == {'test': [10, 30, True], 'test2': ['str', 1.2]}
+            assert m.getValue("sender1") == {'test': [10, 30, True], 'test2': ['a', 1.2]}
             m.stopModule()
         print("SUCCESSED")
     except:
@@ -278,8 +280,9 @@ def test_JSON2():
     try:
         with contextlib.redirect_stdout(None):
             m = Module(file="tests/test.json")
+            print(m["sender1"].getValue())
             m2 = Module(file="tests/test2.json")
-            assert m2.getValue("sender1") == {'test': [10, 30, True], 'test2': ['str', 1.2]}
+            assert m2.getValue("sender1") == {'test': [10, 30, True], 'test2': ['a', 1.2]}
             m.stopModule()
             m2.stopModule()
         print("SUCCESSED")
