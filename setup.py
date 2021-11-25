@@ -5,7 +5,7 @@ Author: Zentetsu
 
 ----
 
-Last Modified: Fri Nov 06 2020
+Last Modified: Wed Nov 24 2021
 Modified By: Zentetsu
 
 ----
@@ -48,5 +48,5 @@ setup(
     long_description_content_type='text/markdown',
     install_requires=['SharedMemory'],
     url='https://github.com/Zentetsu/IRONbark',
-    python_requires='>=3.8',
+    python_requires='>=3.6',
 )

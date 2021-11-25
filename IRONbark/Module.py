@@ -5,7 +5,7 @@ Author: Zentetsu
 
 ----
 
-Last Modified: Wed Nov 24 2021
+Last Modified: Thu Nov 25 2021
 Modified By: Zentetsu
 
 ----
@@ -31,6 +31,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ----
 
 HISTORY:
+2021-11-25	Zen	Updating lib to work with new SharedMeory version
 2021-11-24	Zen	Updating lib to work with new SharedMeory version
 2020-11-06	Zen	Fix calling wrong method
 2020-10-14	Zen	Updating dumpJSON method
@@ -99,7 +100,7 @@ class Module:
         """
         self._checkNameExistOrNot(name, False)
 
-        self.listener[name] = SharedMemory(name, exist=True) #(name, timeout)
+        self.listener[name] = SharedMemory(name, client=False) #(name, timeout)
 
     def delListener(self, name:str):
         """Method to remove a Shared Memory Server
@@ -124,7 +125,7 @@ class Module:
         """
         self._checkNameExistOrNot(name, False)
 
-        self.sender[name] = SharedMemory(name, value, path, size, False) #(name, value, path, size, timeout)
+        self.sender[name] = SharedMemory(name, value, path, size, client=True) #(name, value, path, size, timeout)
 
     def delSender(self, name:str):
         """Method to remove a Shared Memory Client
