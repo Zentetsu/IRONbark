@@ -5,7 +5,7 @@ Author: Zentetsu
 
 ----
 
-Last Modified: Thu Nov 25 2021
+Last Modified: Sat Aug 26 2023
 Modified By: Zentetsu
 
 ----
@@ -41,12 +41,14 @@ HISTORY:
 2020-07-17	Zen	fix for addListener and delListener
 2020-07-13	Zen	Draft finished (not tested yet)
 2020-07-08	Zen	Draft (not tested yet)
+2023-08-27	Zen	Checking numpy compatibility
 '''
 
 
 from .IRONError import *
 from SharedMemory import SharedMemory
 import json
+import numpy
 
 
 class Module:
@@ -82,7 +84,10 @@ class Module:
         _dict = {"name": self.name, "sender": {}, "listener": []}
 
         for k in self.sender.keys():
-            _dict["sender"][k] = self.sender[k].getValue()
+            if type(self.sender[k].getValue()) == numpy.ndarray:
+                _dict["sender"][k] = self.sender[k].getValue().tolist()
+            else:
+                _dict["sender"][k] = self.sender[k].getValue()
 
         for k in self.listener.keys():
             _dict["listener"].append(k)
@@ -91,16 +96,15 @@ class Module:
         json.dump(_dict, json_file)
         json_file.close()
 
-    def addListener(self, name:str, timeout=1):
+    def addListener(self, name:str):
         """Method to add a Shared Memory Server
 
         Args:
             name (str): Shared Memory Name
-            timeout (int, optional): mutex timeout. Defaults to 1.
         """
         self._checkNameExistOrNot(name, False)
 
-        self.listener[name] = SharedMemory(name, client=False) #(name, timeout)
+        self.listener[name] = SharedMemory(name, client=False)
 
     def delListener(self, name:str):
         """Method to remove a Shared Memory Server
@@ -113,7 +117,7 @@ class Module:
         self.stopModule(name)
         self.listener.pop(name)
 
-    def addSender(self, name:str, value=None, path:str=None, size=10, timeout=1):
+    def addSender(self, name:str, value=None, path:str=None, size=10):
         """Method to add a Shared Memory Client
 
         Args:
@@ -121,11 +125,10 @@ class Module:
             value ([type], optional): value to share with the other module. Defaults to None.
             path (str, optional): path to load JSON file and share the data inside. Defaults to None.
             size (int, optional):  or str value. Defaults to 10.
-            timeout (int, optional): mutex timeout. Defaults to 1.
         """
         self._checkNameExistOrNot(name, False)
 
-        self.sender[name] = SharedMemory(name, value, path, size, client=True) #(name, value, path, size, timeout)
+        self.sender[name] = SharedMemory(name, value, path, size, client=True)
 
     def delSender(self, name:str):
         """Method to remove a Shared Memory Client

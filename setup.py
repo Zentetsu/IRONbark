@@ -5,7 +5,7 @@ Author: Zentetsu
 
 ----
 
-Last Modified: Wed Dec 15 2021
+Last Modified: Sat Aug 26 2023
 Modified By: Zentetsu
 
 ----
@@ -39,14 +39,14 @@ from setuptools import setup, find_packages
 
 setup(
     name='IRONbark',
-    version='0.3.0-dev0',
+    version='1.0.0',
     author='Zentetsu',
     packages=find_packages(exclude=['tests*']),
     license='GPLv3',
     description='Inter Process Communication',
     long_description=open('README.md').read(),
     long_description_content_type='text/markdown',
-    install_requires=['SharedMemory'],
+    install_requires=['SharedMemory', 'numpy'],
     url='https://github.com/Zentetsu/IRONbark',
     python_requires='>=3.6',
 )
