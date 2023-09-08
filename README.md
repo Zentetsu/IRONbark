@@ -9,7 +9,7 @@ A lightweight library allowing the communication between several programs throug
 * Overloading dict methods to call Sender and Listener
 
 ### Future improvement
-* Adding comments
+* Adding remote communication
 
 ### More
 [![PyPI version](https://badge.fury.io/py/IRONbark.svg)](https://badge.fury.io/py/IRONbark)
