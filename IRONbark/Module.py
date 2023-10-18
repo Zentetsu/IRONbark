@@ -5,7 +5,7 @@ Author: Zentetsu
 
 ----
 
-Last Modified: Sat Aug 26 2023
+Last Modified: Wed Oct 18 2023
 Modified By: Zentetsu
 
 ----
@@ -42,6 +42,7 @@ HISTORY:
 2020-07-13	Zen	Draft finished (not tested yet)
 2020-07-08	Zen	Draft (not tested yet)
 2023-08-27	Zen	Checking numpy compatibility
+2023-10-18	Zen	Changing default memory size
 '''
 
 
@@ -117,14 +118,14 @@ class Module:
         self.stopModule(name)
         self.listener.pop(name)
 
-    def addSender(self, name:str, value=None, path:str=None, size=10):
+    def addSender(self, name:str, value=None, path:str=None, size=1024):
         """Method to add a Shared Memory Client
 
         Args:
             name (str): Shared Memory name
             value ([type], optional): value to share with the other module. Defaults to None.
             path (str, optional): path to load JSON file and share the data inside. Defaults to None.
-            size (int, optional):  or str value. Defaults to 10.
+            size (int, optional): memory size. Defaults to 1024.
         """
         self._checkNameExistOrNot(name, False)
 
