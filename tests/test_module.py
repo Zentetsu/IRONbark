@@ -268,7 +268,7 @@ def test_JSON():
     print("Creating Module from JSON file:", end=" ")
     try:
         with contextlib.redirect_stdout(None):
-            m = Module(file="test.json")
+            m = Module(file="tests/test.json")
             assert m.getValue("sender1") == {'test': [10, 30, True], 'test2': ['a', 1.2]}
             m.stopModule()
         print("SUCCESSED")
@@ -280,9 +280,9 @@ def test_JSON_2():
     print("Creating Module from JSON file bis:", end=" ")
     try:
         with contextlib.redirect_stdout(None):
-            m = Module(file="test.json")
+            m = Module(file="tests/test.json")
             print(m["sender1"].getValue())
-            m2 = Module(file="test2.json")
+            m2 = Module(file="tests/test2.json")
             assert m2.getValue("sender1") == {'test': [10, 30, True], 'test2': ['a', 1.2]}
             m.stopModule()
             m2.stopModule()
