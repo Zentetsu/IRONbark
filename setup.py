@@ -47,5 +47,5 @@ setup(
     long_description_content_type="text/markdown",
     install_requires=["SharedMemory", "numpy"],
     url="https://github.com/Zentetsu/IRONbark",
-    python_requires=">=3.7",
+    python_requires=">=3.10",
 )
