@@ -56,7 +56,7 @@ class TestIRONBark(unittest.TestCase):
         try:
             m = Module("test__0", silent=True)
             self.assertTrue(m.getLSName() == ([], []))
-        except Exception as e:
+        except:
             self.assertTrue(False)
 
     def test_addSender(self) -> None:
@@ -67,7 +67,7 @@ class TestIRONBark(unittest.TestCase):
             self.assertTrue(m.getValue("name_0") == 10)
             self.assertTrue(m["name_0"][0] == 10)
             m.stopModule()
-        except Exception as e:
+        except:
             self.assertTrue(False)
 
     def test_addListener(self) -> None:
@@ -78,7 +78,7 @@ class TestIRONBark(unittest.TestCase):
             self.assertTrue(m.getValue("name_1") is None)
             self.assertTrue(m["name_1"][0] is None)
             m.stopModule()
-        except Exception as e:
+        except:
             self.assertTrue(False)
 
     def test_addListener_2(self) -> None:
@@ -92,7 +92,7 @@ class TestIRONBark(unittest.TestCase):
             self.assertTrue(m2["name_2"][0] == 10)
             m.stopModule()
             m2.stopModule()
-        except Exception as e:
+        except:
             self.assertTrue(False)
 
     def test_restart(self) -> None:
@@ -103,7 +103,7 @@ class TestIRONBark(unittest.TestCase):
             m.restartModule("name_3")
             m.stopModule()
             self.assertTrue(True)
-        except Exception as e:
+        except:
             self.assertTrue(False)
 
     def test_stopStart(self) -> None:
@@ -115,7 +115,7 @@ class TestIRONBark(unittest.TestCase):
             m.startModule("name_4")
             m.stopModule()
             self.assertTrue(True)
-        except Exception as e:
+        except:
             self.assertTrue(False)
 
     def test_setValue(self) -> None:
@@ -127,7 +127,7 @@ class TestIRONBark(unittest.TestCase):
             self.assertTrue(m.getValue("name_5") == 20)
             self.assertTrue(m["name_5"][0] == 20)
             m.stopModule()
-        except Exception as e:
+        except:
             self.assertTrue(False)
 
     def test_setValue_2(self) -> None:
@@ -142,7 +142,7 @@ class TestIRONBark(unittest.TestCase):
             self.assertTrue(m2["name_6"][0] == 20)
             m.stopModule()
             m2.stopModule()
-        except Exception as e:
+        except:
             self.assertTrue(False)
 
     def test_setValue_3(self) -> None:
@@ -157,7 +157,7 @@ class TestIRONBark(unittest.TestCase):
             self.assertTrue(m2["name_7"][0] == 20)
             m.stopModule()
             m2.stopModule()
-        except Exception as e:
+        except:
             self.assertTrue(False)
 
     def test_delSender(self) -> None:
@@ -171,7 +171,7 @@ class TestIRONBark(unittest.TestCase):
             _s, _ = m.getLSName()
             self.assertTrue(len(_s) == 0)
             m.stopModule()
-        except Exception as e:
+        except:
             self.assertTrue(False)
 
     def test_delListener(self) -> None:
@@ -188,7 +188,7 @@ class TestIRONBark(unittest.TestCase):
             self.assertTrue(len(_l) == 0)
             m.stopModule()
             m2.stopModule()
-        except Exception as e:
+        except:
             self.assertTrue(False)
 
     def test_(self) -> None:
@@ -202,7 +202,7 @@ class TestIRONBark(unittest.TestCase):
             m.stopModule()
             m2.stopModule()
             self.assertTrue(True)
-        except Exception as e:
+        except:
             self.assertTrue(False)
 
     def test_availability(self) -> None:
@@ -212,7 +212,7 @@ class TestIRONBark(unittest.TestCase):
             m.addSender("name_11", value=10)
             self.assertTrue(m.getLSAvailability(sender=True) == ([True], []))
             m.stopModule()
-        except Exception as e:
+        except:
             self.assertTrue(False)
 
     def test_availability_2(self) -> None:
@@ -226,7 +226,7 @@ class TestIRONBark(unittest.TestCase):
             self.assertTrue(m2.getLSAvailability(listener=True) == ([], [True]))
             m.stopModule()
             m2.stopModule()
-        except Exception as e:
+        except:
             self.assertTrue(False)
 
     def test_JSON(self) -> None:
@@ -235,7 +235,7 @@ class TestIRONBark(unittest.TestCase):
             m = Module(file="tests/test.json", silent=True)
             self.assertTrue(m.getValue("sender_1") == {"test": [10, 30, True], "test2": ["a", 1.2]})
             m.stopModule()
-        except Exception as e:
+        except:
             self.assertTrue(False)
 
     def test_JSON_2(self) -> None:
@@ -246,7 +246,7 @@ class TestIRONBark(unittest.TestCase):
             self.assertTrue(m2.getValue("sender_1") == {"test": [10, 30, True], "test2": ["a", 1.2]})
             m.stopModule()
             m2.stopModule()
-        except Exception as e:
+        except:
             self.assertTrue(False)
 
     def test_communication_server(self) -> None:
@@ -254,7 +254,7 @@ class TestIRONBark(unittest.TestCase):
         try:
             m = Module(file="tests/test3_S.json", silent=True)
             m.stopModule()
-        except Exception as e:
+        except:
             self.assertTrue(False)
 
     def test_communication_client(self) -> None:
@@ -262,7 +262,7 @@ class TestIRONBark(unittest.TestCase):
         try:
             m = Module(file="tests/test3_L.json", silent=True)
             m.stopModule()
-        except Exception as e:
+        except:
             self.assertTrue(False)
 
     def test_communication(self) -> None:
@@ -275,7 +275,7 @@ class TestIRONBark(unittest.TestCase):
             self.assertTrue(m1.getValue("sender_1") == m2.getValue("sender_1"))
             m2.stopModule()
             m1.stopModule()
-        except Exception as e:
+        except:
             self.assertTrue(False)
 
     def test_communication_advanced(self) -> None:
@@ -294,7 +294,7 @@ class TestIRONBark(unittest.TestCase):
             self.assertTrue(m1.getValue("sender_1") == m2.getValue("sender_1"))
             m1.stopModule()
             m2.stopModule()
-        except Exception as e:
+        except:
             self.assertTrue(False)
 
 
