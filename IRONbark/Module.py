@@ -5,7 +5,7 @@ Author: Zentetsu
 
 ----
 
-Last Modified: Mon Nov 04 2024
+Last Modified: Tue Nov 05 2024
 Modified By: Zentetsu
 
 ----
@@ -44,6 +44,7 @@ HISTORY:
 2023-08-27	Zen	Checking numpy compatibility
 2023-10-18	Zen	Changing default memory size
 2024-11-04	Zen	Adding remote communication, silent mode + Updating docstring
+2024-11-04	Zen	Adding memory size to the Module
 """  # noqa
 
 from socket import timeout
@@ -61,13 +62,14 @@ import sys
 class Module:
     """Module class focused on communicate data with other modules."""
 
-    def __init__(self, name: str = None, file: str = None, silent: bool = False) -> None:
+    def __init__(self, name: str = None, file: str = None, silent: bool = False, size: int = None) -> None:
         """Class constructor.
 
         Args:
             name (str, optional): desired name for the module. Defaults to None.
             file (str, optional): path to load JSON file and construct module following is content. Defaults to None.
             silent (bool, optional): True -> will not print any error, False -> will print error. Defaults to False.
+            size (int, optional): size of the shared memory. Defaults to None.
 
         Raises:
             IRONMultiInputError: raise an error when value and path are both at None or initilalized
@@ -85,6 +87,7 @@ class Module:
         self.requested = False
         self.new_data = True
         self.silent = silent
+        self.size = size
 
         if file is not None:
             self._loadJSON(file)
@@ -159,7 +162,7 @@ class Module:
             self.remote_sender[2].start()
             asyncio.run(self.__updateData(value))
 
-        self.sender[name] = SharedMemory(name, value, path, None, client=True, silent=self.silent)
+        self.sender[name] = SharedMemory(name, value, path, self.size, client=True, silent=self.silent)
 
     def delSender(self, name: str) -> None:
         """Remove a Shared Memory Client.
