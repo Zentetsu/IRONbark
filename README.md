@@ -1,15 +1,18 @@
 # IRON-BARK: Inter Process Communication
-A lightweight library allowing the communication between several programs through SharedMemory.
+
+Lightweight ROS like library, enabling communication between several programs via SharedMemory or socket.
 
 ### Features
-* Implementation of a functional version
-* Creation of a communication module by JSON file
+* Module can be defined by a JSON file
+* Module can communicate through:
+  * SharedMemory (local)
+  * socket (remote)
 
-### Ongoing
+### In progress
 * Overloading dict methods to call Sender and Listener
 
-### Future improvement
-* Adding remote communication
+### Documentation
+Documentation and example are provided [here](https://github.com/Zentetsu/IRONBark/wiki)
 
 ### More
 [![PyPI version](https://badge.fury.io/py/IRONbark.svg)](https://badge.fury.io/py/IRONbark)
