@@ -1,5 +1,7 @@
 {
     "name": "test",
     "sender": {},
-    "listener": ["sender1"]
+    "listener": {
+        "sender_1": []
+    }
 }

@@ -1,2 +1,2 @@
-SharedMemory>=1.4.1
+SharedMemory>=1.5.0
 numpy>=1.21

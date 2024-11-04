@@ -1,17 +1,17 @@
-'''
-File: iRONError.py
-Created Date: Wednesday, July 3rd 2020, 8:54:23 pm
+"""
+File: IRONError.py
+Created Date: Wednesday, October 18th 2023, 4:12:15 pm
 Author: Zentetsu
 
 ----
 
-Last Modified: Sun Jul 26 2020
+Last Modified: Mon Nov 04 2024
 Modified By: Zentetsu
 
 ----
 
 Project: IRONbark
-Copyright (c) 2020 Zentetsu
+Copyright (c) 2023-2024 Zentetsu
 
 ----
 
@@ -26,36 +26,49 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with this program.  If not, see <http://www.gnu.org/licenses/>.
+along with this program.  If not, see <http: //www.gnu.org/licenses/>.
 
 ----
-
 HISTORY:
 2020-07-08	Zen	Creating file
-'''
+"""  # noqa
 
 
 class IRONMultiInputError(Exception):
-    def __init__(self, message="name xor file must be None."):
-        self.message = message
-        super().__init__(self.message)
+    """Exception raised when both name and file are either None or initialized."""
+
+    def __init__(self, message: str = "name xor file must be None.") -> None:
+        """Initialize the exception."""
+        super().__init__(message)
+
 
 class IRONNameExist(Exception):
-    def __init__(self, name, message=" already exist."):
-        self.message = name + message
-        super().__init__(self.message)
+    """Exception raised when a name already exists."""
+
+    def __init__(self, name: str, message: str = " already exist.") -> None:
+        """Initialize the exception."""
+        super().__init__(name + message)
+
 
 class IRONNameNotExist(Exception):
-    def __init__(self, name, message=" doesn't exist."):
-        self.message = name + message
-        super().__init__(self.message)
+    """Exception raised when a name does not exist."""
+
+    def __init__(self, name: str, message: str = " doesn't exist.") -> None:
+        """Initialize the exception."""
+        super().__init__(name + message)
+
 
 class IRONKeyMissing(Exception):
-    def __init__(self, message="Key missing in JSON file."):
-        self.message = message
-        super().__init__(self.message)
+    """Exception raised when a key is missing in the JSON file."""
+
+    def __init__(self, message: str = "Key missing in JSON file.") -> None:
+        """Initialize the exception."""
+        super().__init__(message)
+
 
 class IRONSenderListenerEmpty(Exception):
-    def __init__(self, message="Sender and Listener are empty."):
-        self.message = message
-        super().__init__(self.message)
+    """Exception raised when both sender and listener are empty."""
+
+    def __init__(self, message: str = "Sender and Listener are empty.") -> None:
+        """Initialize the exception."""
+        super().__init__(message)

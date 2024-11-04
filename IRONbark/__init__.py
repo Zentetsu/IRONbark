@@ -1,11 +1,11 @@
-'''
+"""
 File: __init__.py
 Created Date: Wednesday, July 3rd 2020, 8:48:27 pm
 Author: Zentetsu
 
 ----
 
-Last Modified: Sun Jul 26 2020
+Last Modified: Mon Nov 04 2024
 Modified By: Zentetsu
 
 ----
@@ -32,7 +32,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 HISTORY:
 2020-07-08	Zen	Creating file
-'''
-
+"""  # noqa
 
 from .Module import Module

@@ -1,11 +1,11 @@
-'''
+"""
 File: test_module.py
 Created Date: Wednesday, July 3rd 2020, 9:08:42 pm
 Author: Zentetsu
 
 ----
 
-Last Modified: Wed Oct 18 2023
+Last Modified: Mon Nov 04 2024
 Modified By: Zentetsu
 
 ----
@@ -36,277 +36,268 @@ HISTORY:
 2020-07-23	Zen	Adding test for JSON file
 2020-07-08	Zen	Creating file
 2023-10-18  Zen Updating test
-'''
+2024-10-30	Zen	Fuxning test and error output
+2024-11-04	Zen	Updating docstring + unittest
+"""  # noqa
 
 # import sys
+
 # sys.path.insert(0, "../")
 
 from IRONbark.Module import Module
-import contextlib
+import unittest
 
-def test_creation():
-    print("Create Module instance:", end=" ")
-    try:
-        with contextlib.redirect_stdout(None):
-            m = Module("test0")
-            assert m.getLSName() == ([], [])
-        print("SUCCESSED")
-    except:
-        print("FAILED")
-        assert False
 
-def test_addSender():
-    print("Add Sender to Module:", end=" ")
-    try:
-        with contextlib.redirect_stdout(None):
-            m = Module("test1")
-            m.addSender("name0", value=10)
-            assert m.getValue("name0") == 10
-            assert m["name0"][0] == 10
+class TestIRONBark(unittest.TestCase):
+    """Test IRONBark module."""
+
+    def test_creation(self) -> None:
+        """Test Module creation."""
+        try:
+            m = Module("test__0", silent=True)
+            self.assertTrue(m.getLSName() == ([], []))
+        except Exception as e:
+            self.assertTrue(False)
+
+    def test_addSender(self) -> None:
+        """Test adding a Sender to a Module."""
+        try:
+            m = Module("test_1", silent=True)
+            m.addSender("name_0", value=10)
+            self.assertTrue(m.getValue("name_0") == 10)
+            self.assertTrue(m["name_0"][0] == 10)
             m.stopModule()
-        print("SUCCESSED")
-    except:
-        print("FAILED")
-        assert False
+        except Exception as e:
+            self.assertTrue(False)
 
-def test_addListener():
-    print("Add Listener to Module without Sender:", end=" ")
-    try:
-        with contextlib.redirect_stdout(None):
-            m = Module("test2")
-            m.addListener("name1")
-            assert m.getValue("name1") == None
-            assert m["name1"][0] == None
+    def test_addListener(self) -> None:
+        """Test adding a Listener to a Module without Sender."""
+        try:
+            m = Module("test_2", silent=True)
+            m.addListener("name_1")
+            self.assertTrue(m.getValue("name_1") is None)
+            self.assertTrue(m["name_1"][0] is None)
             m.stopModule()
-        print("SUCCESSED")
-    except:
-        print("FAILED")
-        assert False
+        except Exception as e:
+            self.assertTrue(False)
 
-def test_addListener_2():
-    print("Add Listener to Module with Sender:", end=" ")
-    try:
-        with contextlib.redirect_stdout(None):
-            m = Module("test3")
-            m.addSender("name2", value=10)
-            m2 = Module("test3b")
-            m2.addListener("name2")
-            assert m2.getValue("name2") == 10
-            assert m2["name2"][0] == 10
+    def test_addListener_2(self) -> None:
+        """Test adding a Listener to a Module with Sender."""
+        try:
+            m = Module("test_3", silent=True)
+            m.addSender("name_2", value=10)
+            m2 = Module("test_3b", silent=True)
+            m2.addListener("name_2")
+            self.assertTrue(m2.getValue("name_2") == 10)
+            self.assertTrue(m2["name_2"][0] == 10)
             m.stopModule()
             m2.stopModule()
-        print("SUCCESSED")
-    except:
-        print("FAILED")
-        assert False
+        except Exception as e:
+            self.assertTrue(False)
 
-def test_restart():
-    print("Restarting Sender from Module:", end=" ")
-    try:
-        with contextlib.redirect_stdout(None):
-            m = Module("test4")
-            m.addSender("name3", value=10)
-            m.restartModule("name3")
+    def test_restart(self) -> None:
+        """Test restarting a Module."""
+        try:
+            m = Module("test_4", silent=True)
+            m.addSender("name_3", value=10)
+            m.restartModule("name_3")
             m.stopModule()
-        assert True
-        print("SUCCESSED")
-    except:
-        print("FAILED")
-        assert False
+            self.assertTrue(True)
+        except Exception as e:
+            self.assertTrue(False)
 
-def test_stopStart():
-    print("Restarting Sender from Module bis:", end=" ")
-    try:
-        with contextlib.redirect_stdout(None):
-            m = Module("test5")
-            m.addSender("name4", value=10)
-            m.stopModule("name4")
-            m.startModule("name4")
+    def test_stopStart(self) -> None:
+        """Test stopping and starting a Module."""
+        try:
+            m = Module("test_5", silent=True)
+            m.addSender("name_4", value=10)
+            m.stopModule("name_4")
+            m.startModule("name_4")
             m.stopModule()
-        assert True
-        print("SUCCESSED")
-    except:
-        print("FAILED")
-        assert False
+            self.assertTrue(True)
+        except Exception as e:
+            self.assertTrue(False)
 
-def test_setValue():
-    print("Sender edit value:", end=" ")
-    try:
-        with contextlib.redirect_stdout(None):
-            m = Module("test7")
-            m.addSender("name5", value=10)
-            m.setValue("name5", 20)
-            assert m.getValue("name5") == 20
-            assert m["name5"][0] == 20
+    def test_setValue(self) -> None:
+        """Test setting a value to a Sender."""
+        try:
+            m = Module("test_7", silent=True)
+            m.addSender("name_5", value=10)
+            m.setValue("name_5", 20)
+            self.assertTrue(m.getValue("name_5") == 20)
+            self.assertTrue(m["name_5"][0] == 20)
             m.stopModule()
-        print("SUCCESSED")
-    except:
-        print("FAILED")
-        assert False
+        except Exception as e:
+            self.assertTrue(False)
 
-def test_setValue_2():
-    print("Sender edit value bis:", end=" ")
-    try:
-        with contextlib.redirect_stdout(None):
-            m = Module("test8a")
-            m.addSender("name6", value=10)
-            m2 = Module("test8b")
-            m2.addListener("name6")
-            m.setValue("name6", 20)
-            assert m2.getValue("name6") == 20
-            assert m2["name6"][0] == 20
+    def test_setValue_2(self) -> None:
+        """Test setting a value to a Sender from another Module."""
+        try:
+            m = Module("test_8a", silent=True)
+            m.addSender("name_6", value=10)
+            m2 = Module("test_8b", silent=True)
+            m2.addListener("name_6")
+            m.setValue("name_6", 20)
+            self.assertTrue(m2.getValue("name_6") == 20)
+            self.assertTrue(m2["name_6"][0] == 20)
             m.stopModule()
             m2.stopModule()
-        print("SUCCESSED")
-    except:
-        print("FAILED")
-        assert False
+        except Exception as e:
+            self.assertTrue(False)
 
-def test_setValue_3():
-    print("Listener edit value:", end=" ")
-    try:
-        with contextlib.redirect_stdout(None):
-            m = Module("test9a")
-            m.addSender("name7", value=10)
-            m2 = Module("test9b")
-            m2.addListener("name7")
-            m2.setValue("name7", 20)
-            assert m.getValue("name7") == 20
-            assert m2["name7"][0] == 20
+    def test_setValue_3(self) -> None:
+        """Test setting a value to a Sender from another Module."""
+        try:
+            m = Module("test_9a", silent=True)
+            m.addSender("name_7", value=10)
+            m2 = Module("test_9b", silent=True)
+            m2.addListener("name_7")
+            m2.setValue("name_7", 20)
+            self.assertTrue(m.getValue("name_7") == 20)
+            self.assertTrue(m2["name_7"][0] == 20)
             m.stopModule()
             m2.stopModule()
-        print("SUCCESSED")
-    except:
-        print("FAILED")
-        assert False
+        except Exception as e:
+            self.assertTrue(False)
 
-def test_delSender():
-    print("Removing Sender:", end=" ")
-    try:
-        with contextlib.redirect_stdout(None):
-            m = Module("test10")
-            m.addSender("name8", value=10)
+    def test_delSender(self) -> None:
+        """Test removing a Sender from a Module."""
+        try:
+            m = Module("test_10", silent=True)
+            m.addSender("name_8", value=10)
             _s, _ = m.getLSName()
-            assert len(_s) == 1
-            m.delSender("name8")
+            self.assertTrue(len(_s) == 1)
+            m.delSender("name_8")
             _s, _ = m.getLSName()
-            assert len(_s) == 0
+            self.assertTrue(len(_s) == 0)
             m.stopModule()
-        print("SUCCESSED")
-    except:
-        print("FAILED")
-        assert False
+        except Exception as e:
+            self.assertTrue(False)
 
-def test_delListener():
-    print("Removing Listener:", end=" ")
-    try:
-        with contextlib.redirect_stdout(None):
-            m = Module("test11a")
-            m2 = Module("test11b")
-            m.addSender("name9", value=10)
-            m2.addListener("name9")
+    def test_delListener(self) -> None:
+        """Test removing a Listener from a Module."""
+        try:
+            m = Module("test_11a", silent=True)
+            m2 = Module("test_11b", silent=True)
+            m.addSender("name_9", value=10)
+            m2.addListener("name_9")
             _, _l = m2.getLSName()
-            assert len(_l) == 1
-            m2.delListener("name9")
+            self.assertTrue(len(_l) == 1)
+            m2.delListener("name_9")
             _, _l = m2.getLSName()
-            assert len(_l) == 0
+            self.assertTrue(len(_l) == 0)
             m.stopModule()
             m2.stopModule()
-        print("SUCCESSED")
-    except:
-        print("FAILED")
-        assert False
+        except Exception as e:
+            self.assertTrue(False)
 
-def test_():
-    print("Stopping Modules:", end=" ")
-    try:
-        with contextlib.redirect_stdout(None):
-            m = Module("test12a")
-            m2 = Module("test12b")
-            m.addSender("name10", value=10)
-            m2.addListener("name10")
-            m.stopModule("name10")
+    def test_(self) -> None:
+        """Test stopping a Module."""
+        try:
+            m = Module("test_12a", silent=True)
+            m2 = Module("test_12b", silent=True)
+            m.addSender("name_10", value=10)
+            m2.addListener("name_10")
+            m.stopModule("name_10")
             m.stopModule()
             m2.stopModule()
-        assert True
-        print("SUCCESSED")
-    except:
-        print("FAILED")
-        assert False
+            self.assertTrue(True)
+        except Exception as e:
+            self.assertTrue(False)
 
-def test_availability():
-    print("Testing availability:", end=" ")
-    try:
-        with contextlib.redirect_stdout(None):
-            m = Module("test13")
-            m.addSender("name11", value=10)
-            assert m.getLSAvailability(sender=True) == ([True], [])
+    def test_availability(self) -> None:
+        """Test availability of a Module."""
+        try:
+            m = Module("test_13", silent=True)
+            m.addSender("name_11", value=10)
+            self.assertTrue(m.getLSAvailability(sender=True) == ([True], []))
             m.stopModule()
-        print("SUCCESSED")
-    except:
-        print("FAILED")
-        assert False
+        except Exception as e:
+            self.assertTrue(False)
 
-def test_availability_2():
-    print("Testing availability bis:", end=" ")
-    try:
-        with contextlib.redirect_stdout(None):
-            m = Module("test14a")
-            m2 = Module("test14b")
-            m.addSender("name12", value=10)
-            m2.addListener("name12")
-            assert m.getLSAvailability(sender=True) == ([True], [])
-            assert m2.getLSAvailability(listener=True) == ([], [True])
+    def test_availability_2(self) -> None:
+        """Test availability of a Module bis."""
+        try:
+            m = Module("test_14a", silent=True)
+            m2 = Module("test_14b", silent=True)
+            m.addSender("name_12", value=10)
+            m2.addListener("name_12")
+            self.assertTrue(m.getLSAvailability(sender=True) == ([True], []))
+            self.assertTrue(m2.getLSAvailability(listener=True) == ([], [True]))
             m.stopModule()
             m2.stopModule()
-        print("SUCCESSED")
-    except:
-        print("FAILED")
-        assert False
+        except Exception as e:
+            self.assertTrue(False)
 
-def test_JSON():
-    print("Creating Module from JSON file:", end=" ")
-    try:
-        with contextlib.redirect_stdout(None):
-            m = Module(file="tests/test.json")
-            assert m.getValue("sender1") == {'test': [10, 30, True], 'test2': ['a', 1.2]}
+    def test_JSON(self) -> None:
+        """Test creating a Module from a JSON file."""
+        try:
+            m = Module(file="test.json", silent=True)
+            self.assertTrue(m.getValue("sender_1") == {"test": [10, 30, True], "test2": ["a", 1.2]})
             m.stopModule()
-        print("SUCCESSED")
-    except:
-        print("FAILED")
-        assert False
+        except Exception as e:
+            self.assertTrue(False)
 
-def test_JSON_2():
-    print("Creating Module from JSON file bis:", end=" ")
-    try:
-        with contextlib.redirect_stdout(None):
-            m = Module(file="tests/test.json")
-            print(m["sender1"].getValue())
-            m2 = Module(file="tests/test2.json")
-            assert m2.getValue("sender1") == {'test': [10, 30, True], 'test2': ['a', 1.2]}
+    def test_JSON_2(self) -> None:
+        """Test creating a Module from a JSON file bis."""
+        try:
+            m = Module(file="test.json", silent=True)
+            m2 = Module(file="test2.json", silent=True)
+            self.assertTrue(m2.getValue("sender_1") == {"test": [10, 30, True], "test2": ["a", 1.2]})
             m.stopModule()
             m2.stopModule()
-        print("SUCCESSED")
-    except:
-        print("FAILED")
-        assert False
+        except Exception as e:
+            self.assertTrue(False)
+
+    def test_communication_server(self) -> None:
+        """Test communication server side."""
+        try:
+            m = Module(file="test3_S.json", silent=True)
+            m.stopModule()
+        except Exception as e:
+            self.assertTrue(False)
+
+    def test_communication_client(self) -> None:
+        """Test communication client side."""
+        try:
+            m = Module(file="test3_L.json", silent=True)
+            m.stopModule()
+        except Exception as e:
+            self.assertTrue(False)
+
+    def test_communication(self) -> None:
+        """Test communication between server and client."""
+        try:
+            m1 = Module(file="test3_S.json", silent=True)
+            m2 = Module(file="test3_L.json", silent=True)
+            self.assertTrue(m1.getValue("sender_1") == m2.getValue("sender_1"))
+            m1.setValue("sender_1", {"test": [1, 1, False], "test2": ["a", 1.2]})
+            self.assertTrue(m1.getValue("sender_1") == m2.getValue("sender_1"))
+            m2.stopModule()
+            m1.stopModule()
+        except Exception as e:
+            self.assertTrue(False)
+
+    def test_communication_advanced(self) -> None:
+        """Test communication between server and client advanced."""
+        try:
+            import time
+
+            m1 = Module(file="test3_S.json", silent=True)
+            m2 = Module(file="test3_L.json", silent=True)
+            self.assertTrue(m1.getValue("sender_1") == m2.getValue("sender_1"))
+            m1.stopModule()
+            self.assertTrue(m2.getValue("sender_1") is None)
+            time.sleep(0.5)
+            m1.restartModule("sender_1")
+            time.sleep(0.5)
+            self.assertTrue(m1.getValue("sender_1") == m2.getValue("sender_1"))
+            m1.stopModule()
+            m2.stopModule()
+        except Exception as e:
+            self.assertTrue(False)
 
 
-print("-"*10)
-test_creation()
-test_addSender()
-test_addListener()
-test_addListener_2()
-test_restart()
-test_stopStart()
-test_setValue()
-test_setValue_2()
-test_setValue_3()
-test_delSender()
-test_delListener()
-test_()
-test_availability()
-test_availability_2()
-test_JSON()
-test_JSON_2()
-print("-"*10)
+if __name__ == "__main__":
+    suite = unittest.TestLoader().loadTestsFromTestCase(TestIRONBark)
+    testResult = unittest.TextTestRunner(verbosity=2).run(suite)
