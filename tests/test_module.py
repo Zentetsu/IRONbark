@@ -232,7 +232,7 @@ class TestIRONBark(unittest.TestCase):
     def test_JSON(self) -> None:
         """Test creating a Module from a JSON file."""
         try:
-            m = Module(file="test.json", silent=True)
+            m = Module(file="tests/test.json", silent=True)
             self.assertTrue(m.getValue("sender_1") == {"test": [10, 30, True], "test2": ["a", 1.2]})
             m.stopModule()
         except Exception as e:
@@ -241,8 +241,8 @@ class TestIRONBark(unittest.TestCase):
     def test_JSON_2(self) -> None:
         """Test creating a Module from a JSON file bis."""
         try:
-            m = Module(file="test.json", silent=True)
-            m2 = Module(file="test2.json", silent=True)
+            m = Module(file="tests/test.json", silent=True)
+            m2 = Module(file="tests/test2.json", silent=True)
             self.assertTrue(m2.getValue("sender_1") == {"test": [10, 30, True], "test2": ["a", 1.2]})
             m.stopModule()
             m2.stopModule()
@@ -252,7 +252,7 @@ class TestIRONBark(unittest.TestCase):
     def test_communication_server(self) -> None:
         """Test communication server side."""
         try:
-            m = Module(file="test3_S.json", silent=True)
+            m = Module(file="tests/test3_S.json", silent=True)
             m.stopModule()
         except Exception as e:
             self.assertTrue(False)
@@ -260,7 +260,7 @@ class TestIRONBark(unittest.TestCase):
     def test_communication_client(self) -> None:
         """Test communication client side."""
         try:
-            m = Module(file="test3_L.json", silent=True)
+            m = Module(file="tests/test3_L.json", silent=True)
             m.stopModule()
         except Exception as e:
             self.assertTrue(False)
@@ -268,8 +268,8 @@ class TestIRONBark(unittest.TestCase):
     def test_communication(self) -> None:
         """Test communication between server and client."""
         try:
-            m1 = Module(file="test3_S.json", silent=True)
-            m2 = Module(file="test3_L.json", silent=True)
+            m1 = Module(file="tests/test3_S.json", silent=True)
+            m2 = Module(file="tests/test3_L.json", silent=True)
             self.assertTrue(m1.getValue("sender_1") == m2.getValue("sender_1"))
             m1.setValue("sender_1", {"test": [1, 1, False], "test2": ["a", 1.2]})
             self.assertTrue(m1.getValue("sender_1") == m2.getValue("sender_1"))
@@ -283,8 +283,8 @@ class TestIRONBark(unittest.TestCase):
         try:
             import time
 
-            m1 = Module(file="test3_S.json", silent=True)
-            m2 = Module(file="test3_L.json", silent=True)
+            m1 = Module(file="tests/test3_S.json", silent=True)
+            m2 = Module(file="tests/test3_L.json", silent=True)
             self.assertTrue(m1.getValue("sender_1") == m2.getValue("sender_1"))
             m1.stopModule()
             self.assertTrue(m2.getValue("sender_1") is None)
