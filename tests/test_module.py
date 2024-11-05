@@ -5,7 +5,7 @@ Author: Zentetsu
 
 ----
 
-Last Modified: Mon Nov 04 2024
+Last Modified: Tue Nov 05 2024
 Modified By: Zentetsu
 
 ----
@@ -38,6 +38,7 @@ HISTORY:
 2023-10-18  Zen Updating test
 2024-10-30	Zen	Fuxning test and error output
 2024-11-04	Zen	Updating docstring + unittest
+2024-11-05	Zen	Avoid infinite loop when FAIL
 """  # noqa
 
 # import sys
@@ -68,6 +69,7 @@ class TestIRONBark(unittest.TestCase):
             self.assertTrue(m["name_0"][0] == 10)
             m.stopModule()
         except:
+            m.stopModule()
             self.assertTrue(False)
 
     def test_addListener(self) -> None:
@@ -79,6 +81,7 @@ class TestIRONBark(unittest.TestCase):
             self.assertTrue(m["name_1"][0] is None)
             m.stopModule()
         except:
+            m.stopModule()
             self.assertTrue(False)
 
     def test_addListener_2(self) -> None:
@@ -93,6 +96,8 @@ class TestIRONBark(unittest.TestCase):
             m.stopModule()
             m2.stopModule()
         except:
+            m.stopModule()
+            m2.stopModule()
             self.assertTrue(False)
 
     def test_restart(self) -> None:
@@ -104,6 +109,7 @@ class TestIRONBark(unittest.TestCase):
             m.stopModule()
             self.assertTrue(True)
         except:
+            m.stopModule()
             self.assertTrue(False)
 
     def test_stopStart(self) -> None:
@@ -116,6 +122,7 @@ class TestIRONBark(unittest.TestCase):
             m.stopModule()
             self.assertTrue(True)
         except:
+            m.stopModule()
             self.assertTrue(False)
 
     def test_setValue(self) -> None:
@@ -128,6 +135,7 @@ class TestIRONBark(unittest.TestCase):
             self.assertTrue(m["name_5"][0] == 20)
             m.stopModule()
         except:
+            m.stopModule()
             self.assertTrue(False)
 
     def test_setValue_2(self) -> None:
@@ -143,6 +151,8 @@ class TestIRONBark(unittest.TestCase):
             m.stopModule()
             m2.stopModule()
         except:
+            m.stopModule()
+            m2.stopModule()
             self.assertTrue(False)
 
     def test_setValue_3(self) -> None:
@@ -158,6 +168,8 @@ class TestIRONBark(unittest.TestCase):
             m.stopModule()
             m2.stopModule()
         except:
+            m.stopModule()
+            m2.stopModule()
             self.assertTrue(False)
 
     def test_delSender(self) -> None:
@@ -172,6 +184,7 @@ class TestIRONBark(unittest.TestCase):
             self.assertTrue(len(_s) == 0)
             m.stopModule()
         except:
+            m.stopModule()
             self.assertTrue(False)
 
     def test_delListener(self) -> None:
@@ -189,6 +202,8 @@ class TestIRONBark(unittest.TestCase):
             m.stopModule()
             m2.stopModule()
         except:
+            m.stopModule()
+            m2.stopModule()
             self.assertTrue(False)
 
     def test_(self) -> None:
@@ -203,6 +218,8 @@ class TestIRONBark(unittest.TestCase):
             m2.stopModule()
             self.assertTrue(True)
         except:
+            m.stopModule()
+            m2.stopModule()
             self.assertTrue(False)
 
     def test_availability(self) -> None:
@@ -213,6 +230,7 @@ class TestIRONBark(unittest.TestCase):
             self.assertTrue(m.getLSAvailability(sender=True) == ([True], []))
             m.stopModule()
         except:
+            m.stopModule()
             self.assertTrue(False)
 
     def test_availability_2(self) -> None:
@@ -227,6 +245,8 @@ class TestIRONBark(unittest.TestCase):
             m.stopModule()
             m2.stopModule()
         except:
+            m.stopModule()
+            m2.stopModule()
             self.assertTrue(False)
 
     def test_JSON(self) -> None:
@@ -236,6 +256,7 @@ class TestIRONBark(unittest.TestCase):
             self.assertTrue(m.getValue("sender_1") == {"test": [10, 30, True], "test2": ["a", 1.2]})
             m.stopModule()
         except:
+            m.stopModule()
             self.assertTrue(False)
 
     def test_JSON_2(self) -> None:
@@ -247,6 +268,8 @@ class TestIRONBark(unittest.TestCase):
             m.stopModule()
             m2.stopModule()
         except:
+            m.stopModule()
+            m2.stopModule()
             self.assertTrue(False)
 
     def test_communication_server(self) -> None:
@@ -255,6 +278,7 @@ class TestIRONBark(unittest.TestCase):
             m = Module(file="tests/test3_S.json", silent=True)
             m.stopModule()
         except:
+            m.stopModule()
             self.assertTrue(False)
 
     def test_communication_client(self) -> None:
@@ -263,6 +287,7 @@ class TestIRONBark(unittest.TestCase):
             m = Module(file="tests/test3_L.json", silent=True)
             m.stopModule()
         except:
+            m.stopModule()
             self.assertTrue(False)
 
     def test_communication(self) -> None:
@@ -276,6 +301,8 @@ class TestIRONBark(unittest.TestCase):
             m2.stopModule()
             m1.stopModule()
         except:
+            m2.stopModule()
+            m1.stopModule()
             self.assertTrue(False)
 
     def test_communication_advanced(self) -> None:
@@ -295,6 +322,8 @@ class TestIRONBark(unittest.TestCase):
             m1.stopModule()
             m2.stopModule()
         except:
+            m1.stopModule()
+            m2.stopModule()
             self.assertTrue(False)
 
 

@@ -45,9 +45,9 @@ HISTORY:
 2023-10-18	Zen	Changing default memory size
 2024-11-04	Zen	Adding remote communication, silent mode + Updating docstring
 2024-11-04	Zen	Adding memory size to the Module
+2024-11-05	Zen	Correcting remote connection when sender drops
 """  # noqa
 
-from socket import timeout
 from .IRONError import IRONMultiInputError, IRONNameNotExist, IRONNameExist, IRONKeyMissing, IRONSenderListenerEmpty
 from SharedMemory import SharedMemory
 import threading
@@ -56,7 +56,6 @@ import struct
 import numpy
 import json
 import time
-import sys
 
 
 class Module:
@@ -82,9 +81,8 @@ class Module:
         self.listener = {}
         self.remote_sender = [(None, None), None, None, True]
         self.remote_listener = {}
-        self.data_remote_sender = asyncio.Queue()
-        self.data_remote_listener = asyncio.Queue()
-        self.requested = False
+        self.data_remote_sender = None
+        self.data_remote_listener = False
         self.new_data = True
         self.silent = silent
         self.size = size
@@ -160,7 +158,7 @@ class Module:
         if self.remote_sender[0] != (None, None):
             self.remote_sender[2] = threading.Thread(target=self.__createSocketSender, args=(self.remote_sender[0],))
             self.remote_sender[2].start()
-            asyncio.run(self.__updateData(value))
+            self.__updateData(value)
 
         self.sender[name] = SharedMemory(name, value, path, self.size, client=True, silent=self.silent)
 
@@ -177,7 +175,7 @@ class Module:
         self.sender.pop(name)
 
     def getLSName(self, listener: bool = True, sender: bool = True) -> list:
-        """Return al liste that contains name of sender and listener.
+        """Return a list that contains name of sender and listener.
 
         Args:
             listener (bool, optional): True -> will add listener names to the list. Defaults to True.
@@ -220,10 +218,10 @@ class Module:
                     time.sleep(0.1)
                     stop_it -= 1
 
-                if self.data_remote_listener.empty():
+                if self.requested and stop_it == 0:
                     return None
 
-                return asyncio.run(self.data_remote_listener.get())
+                return self.data_remote_listener
             else:
                 return self.listener[name].getValue()
 
@@ -241,7 +239,7 @@ class Module:
             self.sender[name].setValue(value)
 
             asyncio.run(self.__newData())
-            asyncio.run(self.__updateData(value))
+            self.__updateData(value)
         else:
             self.listener[name].setValue(value)
 
@@ -333,7 +331,7 @@ class Module:
             self.remote_sender[2] = threading.Thread(target=self.__createSocketSender, args=(self.remote_sender[0],))
             self.remote_sender[3] = True
             self.remote_sender[2].start()
-            asyncio.run(self.__updateData(self.sender[list(self.sender.keys())[0]].getValue()))
+            self.__updateData(self.sender[list(self.sender.keys())[0]].getValue())
             asyncio.run(self.__newData())
 
     def stopRemote(self, sender: bool, name: str = "") -> None:
@@ -474,7 +472,7 @@ class Module:
                         continue
 
                     if self.new_data:
-                        data = await self.data_remote_sender.get()
+                        data = self.data_remote_sender
                         self.new_data = False
 
                     request = request.decode()
@@ -557,12 +555,14 @@ class Module:
 
                             if start_frame == "PKG" and (request := await receiveDataSize(reader, size)) != b"":
                                 data = json.loads(request.decode())
-                                await self.data_remote_listener.put(data)
+                                self.data_remote_listener = data
                                 size = 0
                                 send = False
                                 self.requested = False
                 except asyncio.IncompleteReadError:
                     break
+
+            self.data_remote_listener = None
 
         async def __startClient(ip: str, port: str, name: str) -> None:
             while self.remote_listener[name][2]:
@@ -587,5 +587,5 @@ class Module:
         elif name != "":
             self.remote_listener[name][2] = False
 
-    async def __updateData(self, value: any) -> None:
-        await self.data_remote_sender.put(value)
+    def __updateData(self, value: any) -> None:
+        self.data_remote_sender = value
