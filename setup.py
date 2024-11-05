@@ -38,7 +38,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="IRONbark",
-    version="1.2.1",
+    version="1.2.2",
     author="Zentetsu",
     packages=find_packages(exclude=["tests*"]),
     license="GPLv3",

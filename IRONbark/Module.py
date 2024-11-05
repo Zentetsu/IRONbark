@@ -83,6 +83,7 @@ class Module:
         self.remote_listener = {}
         self.data_remote_sender = None
         self.data_remote_listener = False
+        self.requested = False
         self.new_data = True
         self.silent = silent
         self.size = size
